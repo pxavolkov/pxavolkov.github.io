@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Голосуем за книги</title>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+	<h3>Выберите книгу</h3>
+	<form data-bind="foreach: books" id="mainf">
+		<input type="checkbox" data-bind="value: $data"><span data-bind="text: $data"></span> <br />
+	</form>
+	<button id="btSelect">Выбрать</button>
+	<button id="btShow">Результаты</button>
+	<div data-bind="foreach: results">
+		<span data-bind="text: name"></span> : <span data-bind="text: count"></span> <br />
+	</div>
+
+	<script type="text/javascript">
+
+		var model = (function(){
+			var voted = [];
+			return {
+				viewModel: {
+					books: ['Джонатан Фоер "Жутко громко и запредельно близко"','Дэн Симмонс "Террор"','Евге́ний Замя́тин "Мы"','Джордж Оруэлл "1984"','Гарри Гаррисон "Билл — герой Галактики"','Эрик Сигал. “Однокурсники”','Рэймонд Чандлер "Глубокий сон"','Маркус Зузак "Книжный вор"','Ирвинг Стоун "Жажда жизни"','Говард Лавкрафт "Зов Ктулху"','Александр Казанцев "Клокочущая пустота"','Умберто Эко "Пражское кладбище"','Чарльз Уилсон "Спин"'],
+					results: ko.observableArray()
+				},
+				toggle: function () {
+					if($('input[type=checkbox]:checked').length > 2) {
+						$('input[type=checkbox]:checked').first().attr("checked", false);
+					}
+				},
+				select: function (){
+					$('input[type=checkbox]:checked').each(function() {
+						voted.push(this.value);
+
+					});
+					$('input[type=checkbox]:checked').attr("checked", false);
+				},
+				showResults: function() {
+					voted.sort();
+					var r = voted.reduce(function(p, c, i, a) {
+						if (i > 0){
+							if(a[i] == a[i-1]){
+								p[p.length - 1].count++;
+							} else {
+								p.push({name: c, count: 1});
+							}
+						} else {
+							p.push({name: c, count: 1});
+						}
+						return p;
+					}, []);
+					r.sort(function(a,b){return (a.count > b.count) ? -1 : ((b.count > a.count) ? 1 : 0);})
+					for (var i = 0; i < r.length; i++){
+						model.viewModel.results.push(r[i]);
+					}
+				}
+			}
+		})();
+
+		
+		$(function() {
+			$('#btSelect').click(model.select);
+			$('#btShow').click(model.showResults);
+			ko.applyBindings(model.viewModel);
+			$('#mainf :checkbox').change(model.toggle);
+		});
+	</script>
+</body>
+</html>

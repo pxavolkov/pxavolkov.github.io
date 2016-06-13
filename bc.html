@@ -5,17 +5,31 @@
     <title>Голосуем за книги</title>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 </head>
 <body>
-	<h3>Выберите книгу</h3>
-	<form data-bind="foreach: books" id="mainf">
-		<input type="checkbox" data-bind="value: $data"><span data-bind="text: $data"></span> <br />
-	</form>
-	<button id="btSelect">Выбрать</button>
-	<button id="btShow">Результаты</button>
-	<div data-bind="foreach: results">
+	<div class="pure-g">
+	    <div class="pure-u-1-3"><p></p></div>
+	    <div class="pure-u-1-3">
+		    <p style="margin-left:20%;font-weight:bold;">Делай свой выбор!</p>
+			<form class="pure-form pure-form-aligned" data-bind="foreach: books" id="mainf">
+				<label class="pure-checkbox">
+				 <input type="checkbox" data-bind="value: $data">
+				 <span data-bind="text: $data"></span>
+				</label> 
+			</form>
+			<button id="btSelect" class="pure-button pure-button-primary" style="float: right;">Выбрать</button>
+	    </div>
+	    <div class="pure-u-1-3"><p></p></div>
+	</div>
+
+	
+	
+	
+	<div id="resdiv" data-bind="foreach: results" style="position:absolute;top:80%;left:50%;width:400px;margin-left:-200px;border:1px solid rgb(25, 33, 27);padding:10px;background-color:rgb(42, 181, 56);display:none;">
 		<span data-bind="text: name"></span> : <span data-bind="text: count"></span> <br />
 	</div>
+	<button id="btShow" style="position: fixed; bottom: 0; right: 0" class="pure-button">Результаты</button>
 
 	<script type="text/javascript">
 
@@ -27,13 +41,12 @@
 'Чарльз Диккенс. "Большие надежды"',
 'Дэниел Киз. "Цветы для Элджернона"',
 'Дэн Симмонс. "Гиперион"', 
-'Салтыков-Щедрин. "Господа Головлёвы"', 
+'М.Е. Салтыков-Щедрин. "Господа Головлёвы"', 
 'Павел Санаев. "Похороните меня за плинтусом"',
 'Стивен Кинг. "Побег из Шоушенка"',
-'М.А. Булгаков. "Белая гвардия"',
 'Лю Цысинь. "Проблема трех тел"',
 'Курт Воннегут. "Колыбель для кошки"',
-'Ефремов. "Лезвие бритвы"'],
+'И.А. Ефремов. "Лезвие бритвы"'],
 					results: ko.observableArray()
 				},
 				toggle: function () {
@@ -65,6 +78,9 @@
 					r.sort(function(a,b){return (a.count > b.count) ? -1 : ((b.count > a.count) ? 1 : 0);})
 					for (var i = 0; i < r.length; i++){
 						model.viewModel.results.push(r[i]);
+					}
+					if (model.viewModel.results().length > 0) {
+						$('#resdiv').show();
 					}
 				}
 			}

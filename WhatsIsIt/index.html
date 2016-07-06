@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Памятники Севастополя</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="Sevastopol monuments">
+    <meta name="author" content="KCM">
+    <meta name="robots" content="index, follow">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap, 
+            myPlacemark,
+            imHere;
+
+        function init(){ 
+            myMap = new ymaps.Map("map", {
+                center: [44.615812, 33.522500],
+                zoom: 16,
+                controls: ['smallMapDefaultSet']
+            }); 
+            
+            myPlacemark = new ymaps.Placemark([44.616712, 33.525500], {
+                hintContent: 'Площадь Нахимова',
+                balloonContent: '<a target="_blank" href="N.html">Площадь Нахимова</a>'
+            });
+
+            imHere = new ymaps.Placemark([44.615812, 33.522500], {
+                hintContent: 'Вы здесь',
+                balloonContent: 'Дворец детства и юности'
+            },
+            {
+            	preset: 'islands#redIcon'
+            });
+            
+            myMap.geoObjects.add(myPlacemark);
+            myMap.geoObjects.add(imHere);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+    <div class="header">
+        <h1 class="header-heading">Памятники Севастополя</h1>
+    </div>
+    <div class="nav-bar">
+        <ul class="nav">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="#">Помощь</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="main">
+
+            <h1>Памятники на карте</h1>
+            <hr>
+
+            <p>
+                <div id="map" style="width: 600px; height: 400px;margin: 0 auto;"></div>
+            </p>
+
+        </div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016
+    </div>
+</div>
+    
+</body>
+
+</html>
